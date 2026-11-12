@@ -4,6 +4,9 @@
 extern bool haiku(const char *input, const char **reason, bool show) {
    ctx_t *ctx = NULL;
 
+   srand(time(NULL));
+   shuffle(words, nwords);
+
    // Init ctx
    if (!(ctx = malloc(sizeof *ctx))) {
       *reason = "failed to malloc ctx";
@@ -437,16 +440,42 @@ static void render(ctx_t *ctx) {
    for (size_t i = 0; i < 3; i++) {
       sylcnt = 0;
       for (size_t j = 0; j < ctx->lines[i].siz; j++) {
-         (void) printf("%s ", ctx->lines[i].line[j].word);
+         (void) printf(
+            "%s%s ",
+            getcolor(ctx->lines[i].line[j].pos),
+            ctx->lines[i].line[j].word
+         );
          sylcnt += ctx->lines[i].line[j].nsyll;
       }
-      (void) printf("(%zu)\n", sylcnt);
+      (void) printf("\033[0m(%zu)\n", sylcnt);
    }
 
    #if DEBUG
    printf("haiku: rollback happened %zu times\n", ctx->rollback_count);
    printf("haiku: validation happened %zu times\n", ctx->try_count);
    #endif
+}
+
+static const char *getcolor(haiku_word_kind_t kind) {
+   switch (kind) {
+      case HaikuWordKindVerb: return "\033[0;92m";
+      case HaikuWordKindNoun: return "\033[0;33m";
+      case HaikuWordKindAdjective: return "\033[38;5;49m";
+      case HaikuWordKindAdverb: return "\033[0;91m";
+      default: return "\033[0;90m";
+   }
+}
+
+static void shuffle(haiku_word_t words[], size_t nwords) {
+   haiku_word_t temp;
+   int rv;
+
+   for (size_t i = 0; i < nwords; i++) {
+      rv = rand() / (RAND_MAX / nwords + 1);
+      temp = words[i];
+      words[i] = words[rv];
+      words[rv] = temp;
+   }
 }
 
 /*** DEBUG ***/

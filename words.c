@@ -1,6 +1,6 @@
 #include "words.h"
 
-const haiku_word_t words[] = {
+haiku_word_t words[] = {
    {
       .id = 1,
       .word = "A",

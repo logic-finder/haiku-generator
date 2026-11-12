@@ -1,6 +1,7 @@
 #ifndef HAIKU_INTERNALS_H
 #define HAIKU_INTERNALS_H
 
+#include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -57,6 +58,8 @@ static haiku_word_t *getword_at_most_nsyll(ctx_t *ctx, size_t most);
 static void putword(haiku_line_t *line, const haiku_word_t *word);
 static void popword(haiku_line_t *line);
 static void render(ctx_t *ctx);
+static const char *getcolor(haiku_word_kind_t kind);
+static void shuffle(haiku_word_t words[], size_t nwords);
 
 [[maybe_unused]]
 static void debug_showlist(ctx_t *ctx);

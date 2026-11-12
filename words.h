@@ -22,7 +22,7 @@ typedef struct {
    size_t nsyll;
 } haiku_word_t;
 
-extern const haiku_word_t words[];
+extern haiku_word_t words[];
 extern const size_t nwords;
 
 #endif
