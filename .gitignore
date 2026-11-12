@@ -1,0 +1,4 @@
+haiku
+test/test
+*.d
+*.o
